@@ -1,0 +1,90 @@
+<head> 
+<HTA:APPLICATION  
+	 BORDER="none"
+	 BORDERSTYLE="none"
+	 CAPTION="no"
+	 ICON="Icon/Icon.ico"
+	 MAXIMIZEBUTTON="no"
+	 MINIMIZEBUTTON="no"
+	 SCROLL="no"
+	 SHOWINTASKBAR="no"
+	 SINGLEINSTANCE="yes"
+	 SYSMENU="yes"
+	 VERSION="0.4"
+	 WINDOWSTATE="maximize"
+contextmenu="no"
+     > 
+</head> 
+ 
+<title>e7abcaa95eca4d64a6545e2df24e23c9ec37434517b2f21b963ea3204e97f5d916a3a645c2e97f</title> 
+ 
+<SCRIPT language="VBScript"> 
+ 
+    Dim pbTimerID 
+    Dim pbHTML  
+    Dim pbWaitTime 
+    Dim pbHeight 
+    Dim pbWidth 
+    Dim pbBorder 
+    Dim pbUnloadedColor 
+    Dim pbLoadedColor 
+    Dim pbStartTime 
+ 
+
+    Sub rProgressbar 
+        pbHTML = "" 
+        pbSecsPassed = DateDiff("s",pbStartTime,Now) 
+        pbMinsToGo =  Int((pbWaitTime - pbSecsPassed) / 60) 
+        pbSecsToGo = Int((pbWaitTime - pbSecsPassed) - (pbMinsToGo * 60)) 
+        if pbSecsToGo < 10 then 
+            pbSecsToGo = "0" & pbSecsToGo  
+        end if 
+        pbLoadedWidth = (pbSecsPassed / pbWaittime) * pbWidth 
+        pbUnloadedWidth = pbWidth - pbLoadedWidth 
+        pbHTML = pbHTML & "<table border=1 bordercolor=" & pbBorder & " cellpadding=0 cellspacing=0 width=" & pbWidth & "><tr>" 
+        pbHTML = pbHTML & "<th width=" & pbLoadedWidth & " height=" & pbHeight & "align=left bgcolor="  & pbLoadedColor & "></th>" 
+        pbHTML = pbHTML & "<th width=" & pbUnloadedWidth & " height=" & pbHeight & "align=left bgcolor="  & pbUnLoadedColor & "></th>" 
+        pbHTML = pbHTML & "</tr></table><br>" 
+        pbHTML = pbHTML & "<table border=0 cellpadding=0 cellspacing=0 width=" & pbWidth & "><tr>" 
+        pbHTML = pbHTML & "<td align=center width=" & pbWidth & "% height=" & pbHeight & ">" & pbMinsToGo & ":" & pbSecsToGo & " saniye kaldý</td>" 
+        pbHTML = pbHTML & "</tr></table>" 
+        progressbar.InnerHTML = pbHTML 
+        if DateDiff("s",pbStartTime,Now) >= pbWaitTime then 
+            StopTimer 
+            DoAction 
+        end if 
+    End Sub 
+     
+    Sub StopTimer 
+        window.clearInterval(PBTimerID) 
+    End Sub 
+     
+    Sub DoAction 
+        Set WshShell = CreateObject("WScript.Shell") 
+        Return = WshShell.Run("notepad.exe",1,False)     
+        Self.close 
+    End Sub 
+     
+    Sub CancelAction 
+        On Error Resume Next 
+        Set WshShell = CreateObject("WScript.Shell") 
+        Return = WshShell.Run("C:\Users\ETKullanici\AMDForce\data\close.bat",1,False)     
+        Self.Close 
+    End Sub 
+</SCRIPT> 
+ 
+<body> 
+		<div style="height: max">
+			<img src="background.jpg" alt=" " style="width: 100%;max-height: 100%" />
+		</div>
+		<style type="text/css">
+		body {
+			background-color: #000000;
+		}
+		</style>
+<div align="center"> 
+<span id = "progressbar"></span> 
+<br> 
+    <input type="Button" value="Bilgisayarý Kapat" name="button1" onClick="CancelAction" class="button"> 
+</div> 
+</body>
